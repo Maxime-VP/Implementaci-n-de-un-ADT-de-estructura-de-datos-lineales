@@ -1,9 +1,9 @@
 // =================================================================
 //
 // File: list.h
-// Author:
-// Date:
-// 
+// Author: Maxime Vilcocq Parra - A01710550
+// Date: 1/10/2023
+//
 // =================================================================
 #ifndef LIST_H
 #define LIST_H
@@ -13,6 +13,9 @@
 #include "exception.h"
 #include "header.h"
 
+//#include "catch.h" //incluidas para probar en Clion
+
+
 template <class T> class List;
 
 // =================================================================
@@ -21,13 +24,13 @@ template <class T> class List;
 template <class T>
 class Node {
 private:
-	Node(T);
-	Node(T, Node<T>*);
+    Node(T);
+    Node(T, Node<T>*);
 
-	T	    value;
-	Node<T> *next;
+    T	    value;
+    Node<T> *next;
 
-	friend class List<T>;
+    friend class List<T>;
 };
 
 // =================================================================
@@ -56,32 +59,32 @@ Node<T>::Node(T val, Node* nxt) : value(val), next(nxt) {
 template <class T>
 class List {
 private:
-	Node<T> *head;
-	uint 	size;
+    Node<T> *head;
+    uint 	size;
 
 public:
-	List();
-	~List();
+    List();
+    ~List();
 
-	uint  length() const;
-	bool empty() const;
-	bool contains(T) const;
-	void clear();
-	std::string toString() const;
+    uint  length() const;
+    bool empty() const;
+    bool contains(T) const;
+    void clear();
+    std::string toString() const;
 
-	T    front() const;
-	T    last() const;
-	T    get(uint) const;
+    T    front() const;
+    T    last() const;
+    T    get(uint) const;
 
-	void push_front(T);
-	void push_back(T);
-	void insert_at(T, uint);
+    void push_front(T);
+    void push_back(T);
+    void insert_at(T, uint);
 
-	T    pop_front();
-	T 	 pop_back();
-	T    remove_at(uint);
+    T    pop_front();
+    T 	 pop_back();
+    T    remove_at(uint);
 
-	long int  indexOf(T) const;
+    long int  indexOf(T) const;
 };
 
 // =================================================================
@@ -96,7 +99,7 @@ List<T>::List() :head(NULL), size(0) {
 // =================================================================
 template <class T>
 List<T>::~List() {
-	clear();
+    clear();
 }
 
 // =================================================================
@@ -106,7 +109,7 @@ List<T>::~List() {
 // =================================================================
 template <class T>
 bool List<T>::empty() const {
-	return (head == NULL);
+    return (head == NULL);
 }
 
 // =================================================================
@@ -116,7 +119,7 @@ bool List<T>::empty() const {
 // =================================================================
 template <class T>
 uint List<T>::length() const {
-	return size;
+    return size;
 }
 
 // =================================================================
@@ -126,16 +129,16 @@ uint List<T>::length() const {
 // =================================================================
 template <class T>
 bool List<T>::contains(T val) const {
-	Node<T> *p;
+    Node<T> *p;
 
-	p = head;
-	while (p != NULL) {
-		if(p->value == val) {
-			return true;
-		}
-		p = p->next;
-	}
-	return false;
+    p = head;
+    while (p != NULL) {
+        if(p->value == val) {
+            return true;
+        }
+        p = p->next;
+    }
+    return false;
 }
 
 // =================================================================
@@ -143,17 +146,17 @@ bool List<T>::contains(T val) const {
 // =================================================================
 template <class T>
 void List<T>::clear() {
-	Node<T> *p, *q;
+    Node<T> *p, *q;
 
-	p = head;
-	while (p != NULL){
-		q = p->next;
-		delete p;
-		p = q;
-	}
+    p = head;
+    while (p != NULL){
+        q = p->next;
+        delete p;
+        p = q;
+    }
 
-	head = NULL;
-	size = 0;
+    head = NULL;
+    size = 0;
 }
 
 // =================================================================
@@ -163,20 +166,20 @@ void List<T>::clear() {
 // =================================================================
 template <class T>
 std::string List<T>::toString() const {
-	std::stringstream aux;
-	Node<T> *p;
+    std::stringstream aux;
+    Node<T> *p;
 
-	p = head;
-	aux << "[";
-	while (p != NULL) {
-		aux << p->value;
-		if (p->next != NULL) {
-			aux << ", ";
-		}
-		p = p->next;
-	}
-	aux << "]";
-	return aux.str();
+    p = head;
+    aux << "[";
+    while (p != NULL) {
+        aux << p->value;
+        if (p->next != NULL) {
+            aux << ", ";
+        }
+        p = p->next;
+    }
+    aux << "]";
+    return aux.str();
 }
 
 // =================================================================
@@ -187,11 +190,11 @@ std::string List<T>::toString() const {
 // =================================================================
 template <class T>
 T List<T>::front() const {
-	if (empty()) {
-		throw NoSuchElement();
-	}
+    if (empty()) {
+        throw NoSuchElement();
+    }
 
-	return head->value;
+    return head->value;
 }
 
 // =================================================================
@@ -202,17 +205,17 @@ T List<T>::front() const {
 // =================================================================
 template <class T>
 T List<T>::last() const {
-	Node<T> *p;
+    Node<T> *p;
 
-	if (empty()) {
-		throw NoSuchElement();
-	}
+    if (empty()) {
+        throw NoSuchElement();
+    }
 
-	p = head;
-	while (p->next != NULL) {
-		p = p->next;
-	}
-	return p->value;
+    p = head;
+    while (p->next != NULL) {
+        p = p->next;
+    }
+    return p->value;
 }
 
 // =================================================================
@@ -220,13 +223,25 @@ T List<T>::last() const {
 //
 // @returns the element in index
 // @throws IndexOutOfBounds, if index >= size.
+//
+// La complejidad del algoritmo es O(N)
+//
 // =================================================================
 template <class T>
 T List<T>::get(uint index) const {
-	T aux;
 
-	// TO DO
-	return aux;
+    if (index > size){
+        throw IndexOutOfBounds();
+    }
+
+    Node<T>*p;
+    p=head;
+
+    for (int i = 0;i<index;i++){ //recorre hasta el index
+        p=p->next;
+    }
+
+    return p->value;
 }
 
 // =================================================================
@@ -235,12 +250,12 @@ T List<T>::get(uint index) const {
 // =================================================================
 template <class T>
 void List<T>::push_front(T val) {
-	Node<T> *q;
+    Node<T> *q;
 
-	q = new Node<T>(val);
-	q->next = head;
-	head = q;
-	size++;
+    q = new Node<T>(val);
+    q->next = head;
+    head = q;
+    size++;
 }
 
 // =================================================================
@@ -249,22 +264,22 @@ void List<T>::push_front(T val) {
 // =================================================================
 template <class T>
 void List<T>::push_back(T val) {
-	Node<T> *p, *q;
+    Node<T> *p, *q;
 
-	if (empty()) {
-		push_front(val);
-		return;
-	}
+    if (empty()) {
+        push_front(val);
+        return;
+    }
 
-	p = head;
-	while (p->next != NULL) {
-		p = p->next;
-	}
+    p = head;
+    while (p->next != NULL) {
+        p = p->next;
+    }
 
-	q = new Node<T>(val);
-	q->next = p->next;
-	p->next = q;
-	size++;
+    q = new Node<T>(val);
+    q->next = p->next;
+    p->next = q;
+    size++;
 }
 
 // =================================================================
@@ -272,10 +287,41 @@ void List<T>::push_back(T val) {
 // was in that position is shifted to the right.
 //
 // @throws IndexOutOfBounds, if index > size.
+//
+//La complejidad del algoritmo es O(N)
+//
 // =================================================================
 template <class T>
 void List<T>::insert_at(T val, uint index) {
-	// TO DO
+
+    if (index > size){
+        throw IndexOutOfBounds();
+    }
+
+    Node<T>*p;
+    p=head;
+
+    if (index==0){
+        push_front(val);
+    }
+
+    else if (index == size){
+        push_back(val);
+    }
+
+    else{
+
+        for (int i = 0;i<index-1;i++){ //recorre hasta el index
+            p=p->next;
+        }
+
+        Node<T>*a;
+        a=new Node<T>(val);
+        a->next=p->next;
+        p->next=a;
+        size++;
+    }
+
 }
 
 // =================================================================
@@ -286,21 +332,21 @@ void List<T>::insert_at(T val, uint index) {
 // =================================================================
 template <class T>
 T List<T>::pop_front() {
-	T val;
-	Node<T> *p;
+    T val;
+    Node<T> *p;
 
-	if (empty()) {
-		throw NoSuchElement();
-	}
+    if (empty()) {
+        throw NoSuchElement();
+    }
 
-	p = head;
+    p = head;
 
-	head = p->next;
-	val = p->value;
+    head = p->next;
+    val = p->value;
 
-	delete p;
-	size--;
-	return val;
+    delete p;
+    size--;
+    return val;
 }
 
 // =================================================================
@@ -311,31 +357,31 @@ T List<T>::pop_front() {
 // =================================================================
 template <class T>
 T List<T>::pop_back() {
-	Node<T> *p, *q;
-	T val;
+    Node<T> *p, *q;
+    T val;
 
-	if (empty()) {
-		throw NoSuchElement();
-	}
+    if (empty()) {
+        throw NoSuchElement();
+    }
 
-	if (size == 1) {
-		return pop_front();
-	}
+    if (size == 1) {
+        return pop_front();
+    }
 
-	q = NULL;
-	p = head;
-	while (p->next != NULL) {
-		q = p;
-		p = p->next;
-	}
+    q = NULL;
+    p = head;
+    while (p->next != NULL) {
+        q = p;
+        p = p->next;
+    }
 
-	q->next = p->next;
-	val = p->value;
+    q->next = p->next;
+    val = p->value;
 
-	delete p;
-	size--;
+    delete p;
+    size--;
 
-	return val;
+    return val;
 }
 
 // =================================================================
@@ -343,12 +389,34 @@ T List<T>::pop_back() {
 //
 // @returns the element that was in index.
 // @throws IndexOutOfBounds, if index >= size.
+//
+//La complejidad del algoritmo es O(N)
+//
 // =================================================================
 template <class T>
 T List<T>::remove_at(uint index) {
-	T aux;
-	// TO DO
-	return aux;
+
+    if (size <= index){
+        throw IndexOutOfBounds();
+    }
+
+    Node<T>*p,*q;
+    p=head;
+    q=NULL;
+
+    if (index == 0){
+        T val = pop_front();
+    }
+
+    for (int i = 0;i<index-1;i++){ //recorre hasta el index
+        q=p;
+        p=p->next;
+    }
+
+    q->next = p->next;
+    delete p;
+    size--;
+
 }
 
 // =================================================================
@@ -356,11 +424,33 @@ T List<T>::remove_at(uint index) {
 //
 // @returns the position of an item in the list, -1 otherwise.
 // @throws IndexOutOfBounds, if index >= size.
+//
+//La complejidad del algoritmo es O(N)
+//
 // =================================================================
 template <class T>
 long int List<T>::indexOf(T val) const {
-	// TO DO
-	return -1;
+
+    int index =0;
+
+    if (size <= index){
+        throw IndexOutOfBounds();
+    }
+
+    Node<T>*p;
+    p=head;
+
+    while (p != NULL){
+        if (p==val){
+            return index; // regresa el index cuando encuentra el valor
+        }
+        p=p->next;
+        index=index+1;
+    }
+
+    return -1; // cuando no encuentra el valor da -1
 }
+
+
 
 #endif /* LIST_H */
