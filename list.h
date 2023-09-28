@@ -230,7 +230,7 @@ T List<T>::last() const {
 template <class T>
 T List<T>::get(uint index) const {
 
-    if (index > size){
+    if (index >= size){
         throw IndexOutOfBounds();
     }
 
@@ -403,19 +403,23 @@ T List<T>::remove_at(uint index) {
     Node<T>*p,*q;
     p=head;
     q=NULL;
+    T val;
 
     if (index == 0){
-        T val = pop_front();
+        val = pop_front();
     }
-
-    for (int i = 0;i<index-1;i++){ //recorre hasta el index
+    else{
+    for (int i = 0;i<index;i++){ //recorre hasta el index
         q=p;
         p=p->next;
     }
+        q->next = p->next;
+        val=p->value;
+        delete p;
+        size--;
+    }
 
-    q->next = p->next;
-    delete p;
-    size--;
+    return val;
 
 }
 
@@ -441,7 +445,7 @@ long int List<T>::indexOf(T val) const {
     p=head;
 
     while (p != NULL){
-        if (p==val){
+        if (p->value==val){
             return index; // regresa el index cuando encuentra el valor
         }
         p=p->next;
